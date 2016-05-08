@@ -17,17 +17,21 @@
         430  // paper
     ];
     const IMAGE_PATH = './images/sprite.png';
-    const FPS = 10;
+    const FPS = 1;
+    let isPause = false;
+    let currentFrame = 0;
 
     function main() {
         const canvas = document.getElementById('screen');
         const context = canvas.getContext('2d');
         const imageObj = new Image();
-        let currentFrame = 0;
+        currentFrame = 0;
 
         imageObj.onload = function () {
             function loop () {
-                draw(canvas, context, imageObj, currentFrame++);
+                if (!isPause) {
+                    draw(canvas, context, imageObj, currentFrame++);
+                }
                 setTimeout(loop, 1000/FPS);
             }
             loop();
@@ -43,7 +47,6 @@
         const width = imageObject.width / HAND_FORMS.length;
         const sx = HAND_X[handIndex];
         const swidth = HAND_WIDTH[handIndex];
-        //const margin = ADJUST_MARGIN[handIndex];
 
         context.drawImage(
             imageObject,
@@ -59,5 +62,44 @@
         );
     }
 
+    function setButtonAction() {
+        const rock = document.getElementById('rock');
+        const scissors = document.getElementById('scissors');
+        const paper = document.getElementById('paper');
+        const restart = document.getElementById('restart');
+
+        function onClick(event) {
+            const myHandType = parseInt(event.target.value, 10);
+            const enemyHandType = parseInt(currentFrame % HAND_FORMS.length, 10);
+            isPause = true;
+            judge(myHandType, enemyHandType);
+        }
+
+        // decide hand
+        rock.addEventListener('click', onClick);
+        scissors.addEventListener('click', onClick);
+        paper.addEventListener('click', onClick);
+
+        // restart
+        restart.addEventListener('click', function (){
+            window.location.reload();
+        });
+    }
+
+    function judge(myHandType, enemyHandType) {
+        if (myHandType === enemyHandType) {
+            alert('DRAW!');
+        } else {
+            // TODO
+            alert('win or lose');
+        }
+        // else if (myHandType === enemyHandType) {
+        //
+        // } else {
+        //
+        // }
+    }
+
+    setButtonAction();
     main();
 })(window);
