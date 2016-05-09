@@ -2,12 +2,12 @@
 (function(global) {
 
     const HAND_FORMS = [
-        0, // rock
-        1, // scissors
-        2  // paper
+        0, // paper
+        1, // rock
+        2  // scissors
     ];
     const HAND_X = [
-        0, // rock
+        0,   // rock
         380, // scissors
         750  // paper
     ];
@@ -17,7 +17,7 @@
         430  // paper
     ];
     const IMAGE_PATH = './images/sprite.png';
-    const FPS = 1;
+    const FPS = 60;
     let isPause = false;
     let currentFrame = 0;
 
@@ -87,17 +87,16 @@
     }
 
     function judge(myHandType, enemyHandType) {
-        if (myHandType === enemyHandType) {
+        // 0: DRAW, 1: LOSE, 2: WIN
+        const result = (myHandType - Math.abs(enemyHandType) + 3) % HAND_FORMS.length;
+
+        if (result === 0) {
             alert('DRAW!');
+        } else if (result === 1) {
+            alert('YOU LOSE!');
         } else {
-            // TODO
-            alert('win or lose');
+            alert('YOU WIN!');
         }
-        // else if (myHandType === enemyHandType) {
-        //
-        // } else {
-        //
-        // }
     }
 
     setButtonAction();
